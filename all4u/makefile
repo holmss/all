@@ -8,7 +8,7 @@ CFLAGS := -pedantic -Wall -Wextra -Wpedantic -W -Wno-sign-compare -Wno-long-long
 all: $(TARGET)
 
 clean:
-	rm -f $(TARGET) $(SRC:%.c=%.o)
+	rm -f $(TARGET) $(SRC:%.c=%.o) out.txt
 
 $(TARGET): $(SRC:%.c=%.o)
 	$(CXX) $(CFLAGS) -o $@ $^
