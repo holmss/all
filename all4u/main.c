@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <ctype.h>
+#include <time.h>
 
 #define ERROR_CREATE_OR_OPEN_FILE -1
 #define ERROR_TYPE -2
@@ -78,40 +80,71 @@ void RightRootLeft(node * node)
     RightRootLeft(node->left);
 }
 
+void FileInit (FILE * file)
+{
+    srand(time(NULL));
+    int i = rand() % 10 + 1, j;
+    int n, m;
+    int next;
+
+    for (n = 0; n < i; n++)
+    { 
+        j = rand() % 10 + 1;   
+        for (m = 0; m < j; m++)
+        {
+            next = rand() % (int)(pow(2,16) - 1);
+            fprintf(file, "%d ", next);
+        }
+        fputc('\n', file);
+    }   
+}
+
 int main()
 {
+    FILE * inp;
     int c;
-    int inp;
+    int input;
     node *nd = NULL;
 
+    inp = fopen("inp.txt", "w+r");
     out = fopen("out.txt", "w");
 
-    if (!out)
+    FileInit(inp);
+
+    if (!(inp || out))
     {
         printf("can`t open file");
         return ERROR_CREATE_OR_OPEN_FILE;
     }
 
-    do
+    char checker;
+
+    // do
+    // {
+    //     if (input = fscanf(inp, "%d", &c))
+    //     {
+    //         nd = Add(nd, c);
+    //         printf("%d ", c);
+    //     }
+
+    //     else if (!input)
+    //     {
+    //         printf("the variable should have a digital type\n");
+    //         return ERROR_TYPE;
+    //     }
+    // } while (checker = fgetc(inp) != EOF);
+
+    while (checker = fgetc(inp) != EOF)
     {
-        if ((inp = scanf("%d", &c)) == 1)
-            nd = Add(nd, c);
-
-        else if (!inp)
-        {
-            printf("the variable should have a digital type\n");
-            return ERROR_TYPE;
-        }
-
-        else
-            break;
-    } while (inp);
+        printf("%c", checker);
+    }
 
     printInorder(nd, 0);
 
     LeftRootRight(nd);
     RightRootLeft(nd);
 
+    fclose(inp);
     fclose(out);
     return 0;
 }
